@@ -11,7 +11,7 @@ with DAG(
 ) as dag:
     create_schema_deb = PostgresOperator(
         task_id="create_schema_deb_paulirat",
-        postgres_conn_id = "terraform-20220102062020606600000010.cixft0af6zui.us-east-2.rds.amazonaws.com"
+        postgres_conn_id="terraform-20220102062020606600000010.cixft0af6zui.us-east-2.rds.amazonaws.com",
         sql="sql/user_purchase.sql",
     )
 

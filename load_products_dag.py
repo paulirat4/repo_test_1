@@ -141,7 +141,8 @@ class S3ToPostgresTransfer(BaseOperator):
         print(os.path.sep)
 
         # ruta_archivo = +os.path.sep + nombre_de_archivo
-        ruta_archivo = str(os.path.sep) + nombre_de_archivo
+        # ruta_archivo = str(os.path.sep) + nombre_de_archivo
+        ruta_archivo = nombre_de_archivo
 
         self.log.info(ruta_archivo)
         proposito_del_archivo = "r"  # r es de Lectura

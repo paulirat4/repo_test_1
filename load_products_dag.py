@@ -166,21 +166,14 @@ class S3ToPostgresTransfer(BaseOperator):
 
         # set the columns to insert, in this case we ignore the id, because is autogenerate.
         list_target_fields = [
-            "producto",
-            "presentacion",
-            "marca",
-            "categoria",
-            "catalogo",
-            "precio",
-            "fecharegistro",
-            "cadenacomercial",
-            "giro",
-            "nombrecomercial",
-            "direccion",
-            "estado",
-            "municipio",
-            "latitud",
-            "longitud",
+            "invoice_number",
+            "stock_code",
+            "detail",
+            "quantity",
+            "invoice_date",
+            "unit_price",
+            "customer_id",
+            "country",
         ]
 
         self.current_table = self.schema + "." + self.table
@@ -201,40 +194,40 @@ class S3ToPostgresTransfer(BaseOperator):
         self.sources = self.cursor.fetchall()
         self.log.info(self.sources)
 
-        for source in self.sources:
-            self.log.info(
-                "producto: {0} - \
-                           presentacion: {1} - \
-                           marca: {2} - \
-                           categoria: {3} - \
-                           catalogo: {4} - \
-                           precio: {5} - \
-                           fechaRegistro: {6} - \
-                           cadenaComercial: {7} - \
-                           giro: {8} - \
-                           nombreComercial: {9} - \
-                           direccion: {10} - \
-                           estado: {11} - \
-                           municipio: {12} - \
-                           latitud: {13} - \
-                           longitud: {14} ".format(
-                    source[0],
-                    source[1],
-                    source[2],
-                    source[3],
-                    source[4],
-                    source[5],
-                    source[6],
-                    source[7],
-                    source[8],
-                    source[9],
-                    source[10],
-                    source[11],
-                    source[12],
-                    source[13],
-                    source[14],
-                )
-            )
+        # for source in self.sources:
+        #     self.log.info(
+        #         "producto: {0} - \
+        #                    presentacion: {1} - \
+        #                    marca: {2} - \
+        #                    categoria: {3} - \
+        #                    catalogo: {4} - \
+        #                    precio: {5} - \
+        #                    fechaRegistro: {6} - \
+        #                    cadenaComercial: {7} - \
+        #                    giro: {8} - \
+        #                    nombreComercial: {9} - \
+        #                    direccion: {10} - \
+        #                    estado: {11} - \
+        #                    municipio: {12} - \
+        #                    latitud: {13} - \
+        #                    longitud: {14} ".format(
+        #             source[0],
+        #             source[1],
+        #             source[2],
+        #             source[3],
+        #             source[4],
+        #             source[5],
+        #             source[6],
+        #             source[7],
+        #             source[8],
+        #             source[9],
+        #             source[10],
+        #             source[11],
+        #             source[12],
+        #             source[13],
+        #             source[14],
+        #         )
+        #     )
 
 
 from datetime import datetime

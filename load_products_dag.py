@@ -186,7 +186,9 @@ class S3ToPostgresTransfer(BaseOperator):
         )
 
         # Query and print the values of the table products in the console.
-        self.request = "SELECT * FROM " + self.current_table
+        self.request = (
+            "SELECT * FROM " + self.current_table + "WHERE stock_code = '84406B'"
+        )
         self.log.info(self.request)
         self.connection = self.pg_hook.get_conn()
         self.cursor = self.connection.cursor()
@@ -262,8 +264,8 @@ s3_to_postgres_operator = S3ToPostgresTransfer(
     table="products",
     # s3_bucket="bucket-test-45",
     s3_bucket="s3-data-bootcamp-20220116234309854700000005",
-    s3_key="test_1.csv",
-    # s3_key="user_purchase_new.csv",
+    # s3_key="test_1.csv",
+    s3_key="user_purchase_new.csv",
     aws_conn_postgres_id="postgres_default",
     aws_conn_id="aws_default",
     dag=dag,

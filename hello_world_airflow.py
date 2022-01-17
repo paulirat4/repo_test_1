@@ -8,6 +8,14 @@ def print_hello():
     return "Hello world from first Airflow DAG!"
 
 
+def print_welcome():
+    return "Welcome from custom operator - Airflow DAG!"
+
+
+welcome_operator = PythonOperator(
+    task_id="welcome_task", python_callable=print_welcome, dag=dag
+)
+
 dag = DAG(
     "hello_world",
     description="Hello World DAG",
@@ -20,4 +28,5 @@ hello_operator = PythonOperator(
     task_id="hello_task", python_callable=print_hello, dag=dag
 )
 
-hello_operator
+# hello_operator
+welcome_task

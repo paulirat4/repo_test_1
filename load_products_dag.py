@@ -136,7 +136,11 @@ class S3ToPostgresTransfer(BaseOperator):
         # Read the file with the DDL SQL to create the table products in postgres DB.
         nombre_de_archivo = "dbname.products.sql"
 
-        ruta_archivo = +os.path.sep + nombre_de_archivo
+        print("i reached here")
+
+        print(os.path.sep)
+
+        ruta_archivo = + os.path.sep + nombre_de_archivo
         self.log.info(ruta_archivo)
         proposito_del_archivo = "r"  # r es de Lectura
         codificación = "UTF-8"  # Tabla de Caracteres,

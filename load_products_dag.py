@@ -142,7 +142,7 @@ class S3ToPostgresTransfer(BaseOperator):
 
         # ruta_archivo = +os.path.sep + nombre_de_archivo
         # ruta_archivo = str(os.path.sep) + nombre_de_archivo
-        ruta_archivo = nombre_de_archivo
+        ruta_archivo = "/opt/airflow/dags/repo/dbname.products.sql"
 
         self.log.info(ruta_archivo)
         proposito_del_archivo = "r"  # r es de Lectura

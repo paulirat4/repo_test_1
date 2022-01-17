@@ -1,5 +1,7 @@
 -- Table: dbname.products
 
+CREATE SCHEMA IF NOT EXISTS dbname;
+
 DROP TABLE IF EXISTS dbname.products;
 
 CREATE TABLE IF NOT EXISTS dbname.products

@@ -36,7 +36,7 @@ class S3ToPostgresTransfer(BaseOperator):
         aws_conn_postgres_id="postgres_default",
         aws_conn_id="aws_default",
         verify=None,
-        # wildcard_match=False,
+        wildcard_match=False,
         copy_options=tuple(),
         autocommit=False,
         parameters=None,
@@ -51,7 +51,7 @@ class S3ToPostgresTransfer(BaseOperator):
         self.aws_conn_postgres_id = aws_conn_postgres_id
         self.aws_conn_id = aws_conn_id
         self.verify = verify
-        # self.wildcard_match = wildcard_match
+        self.wildcard_match = wildcard_match
         self.copy_options = copy_options
         self.autocommit = autocommit
         self.parameters = parameters
@@ -78,17 +78,17 @@ class S3ToPostgresTransfer(BaseOperator):
         print(self.s3.get_wildcard_key(self.s3_key, self.s3_bucket))
 
         # Validate if the file source exist or not in the bucket.
-        # if self.wildcard_match:
-        # if not self.s3.check_for_wildcard_key(self.s3_key, self.s3_bucket):
-        #    raise AirflowException("No key matches {0}".format(self.s3_key))
-        # s3_key_object = self.s3.get_wildcard_key(self.s3_key, self.s3_bucket)
-        # else:
-        #    if not self.s3.check_for_key(self.s3_key, self.s3_bucket):
-        #        raise AirflowException(
-        #    "The key {0} does not exists".format(self.s3_key)
-        #    )
+        if self.wildcard_match:
+            if not self.s3.check_for_wildcard_key(self.s3_key, self.s3_bucket):
+                raise AirflowException("No key matches {0}".format(self.s3_key))
+            s3_key_object = self.s3.get_wildcard_key(self.s3_key, self.s3_bucket)
+        else:
+            if not self.s3.check_for_key(self.s3_key, self.s3_bucket):
+                raise AirflowException(
+                    "The key {0} does not exists".format(self.s3_key)
+                )
 
-        # s3_key_object = self.s3.get_key(self.s3_key, self.s3_bucket)
+            s3_key_object = self.s3.get_key(self.s3_key, self.s3_bucket)
 
         # Read and decode the file into a list of strings.
         list_srt_content = (
@@ -262,8 +262,8 @@ s3_to_postgres_operator = S3ToPostgresTransfer(
     table="products",
     # s3_bucket="bucket-test-45",
     s3_bucket="s3-data-bootcamp-20220116234309854700000005",
-    # s3_key="test_1.csv",
-    s3_key="user_purchase_new.csv",
+    s3_key="test_1.csv",
+    # s3_key="user_purchase_new.csv",
     aws_conn_postgres_id="postgres_default",
     aws_conn_id="aws_default",
     dag=dag,

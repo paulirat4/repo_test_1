@@ -73,13 +73,10 @@ class S3ToPostgresTransfer(BaseOperator):
         print("miau")
 
         print(self.s3.list_keys(self.s3_bucket, "", ""))
+        print(self.s3.check_for_wildcard_key(self.s3_key, self.s3_bucket, ""))
 
         # Validate if the file source exist or not in the bucket.
         # if self.wildcard_match:
-        # print(
-        #    "answer" + self.s3.check_for_wildcard_key(self, self.s3_key, self.s3_bucket)
-        # )
-
         # if not self.s3.check_for_wildcard_key(self.s3_key, self.s3_bucket):
         #    raise AirflowException("No key matches {0}".format(self.s3_key))
         # s3_key_object = self.s3.get_wildcard_key(self.s3_key, self.s3_bucket)
@@ -261,8 +258,8 @@ s3_to_postgres_operator = S3ToPostgresTransfer(
     task_id="dag_s3_to_postgres",
     schema="dbname",  #'public'
     table="products",
-    # s3_bucket="bucket-test-45",
-    s3_bucket="s3-data-bootcamp-20220116234309854700000005",
+    s3_bucket="bucket-test-45",
+    # s3_bucket="s3-data-bootcamp-20220116234309854700000005",
     s3_key="test_1.csv",
     aws_conn_postgres_id="postgres_default",
     aws_conn_id="aws_default",

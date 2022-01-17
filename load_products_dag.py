@@ -86,7 +86,7 @@ class S3ToPostgresTransfer(BaseOperator):
         #     if not self.s3.check_for_key(self.s3_key, self.s3_bucket):
         #         raise AirflowException(
         #             "The key {0} does not exists".format(self.s3_key)
-                )
+        #        )
 
         s3_key_object = self.s3.get_key(self.s3_key, self.s3_bucket)
 
@@ -140,7 +140,7 @@ class S3ToPostgresTransfer(BaseOperator):
 
         print(os.path.sep)
 
-        ruta_archivo = + os.path.sep + nombre_de_archivo
+        ruta_archivo = +os.path.sep + nombre_de_archivo
         self.log.info(ruta_archivo)
         proposito_del_archivo = "r"  # r es de Lectura
         codificación = "UTF-8"  # Tabla de Caracteres,

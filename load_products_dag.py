@@ -72,7 +72,7 @@ class S3ToPostgresTransfer(BaseOperator):
 
         print("miau")
 
-        print(self.s3.get_wildcard_key(self, self.s3_key, self.s3_bucket))
+        print(read_key(self, self.s3_key, self.s3_bucket))
 
         # Validate if the file source exist or not in the bucket.
         # if self.wildcard_match:
@@ -261,7 +261,7 @@ s3_to_postgres_operator = S3ToPostgresTransfer(
     task_id="dag_s3_to_postgres",
     schema="dbname",  #'public'
     table="products",
-    s3_bucket="s3-data-bootcamp-20220116234309854700000005",
+    s3_bucket="bucket-test-45",
     s3_key="test_1.csv",
     aws_conn_postgres_id="postgres_default",
     aws_conn_id="aws_default",

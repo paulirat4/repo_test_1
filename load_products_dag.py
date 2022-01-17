@@ -74,6 +74,8 @@ class S3ToPostgresTransfer(BaseOperator):
 
         print(self.s3.list_keys(self.s3_bucket, "", ""))
         print(self.s3.check_for_wildcard_key(self.s3_key, self.s3_bucket))
+        print("miauchi")
+        print(self.s3.get_wildcard_key(self.s3_key, self.s3_bucket))
 
         # Validate if the file source exist or not in the bucket.
         # if self.wildcard_match:

@@ -24,16 +24,16 @@ welcome_operator = PythonOperator(
     task_id="welcome_task", python_callable=print_welcome, dag=dag
 )
 
-s3_to_postgres_operator = S3ToPostgresTransfer(
-    task_id="dag_s3_to_postgres",
-    schema="dbname",  #'public'
-    table="products",
-    s3_bucket="s3-data-bootcamp-20220116234309854700000005",
-    s3_key="user_purchase_data",
-    aws_conn_postgres_id="postgres_default",
-    aws_conn_id="aws_default",
-    dag=dag,
-)
+# s3_to_postgres_operator = S3ToPostgresTransfer(
+#     task_id="dag_s3_to_postgres",
+#     schema="dbname",  #'public'
+#     table="products",
+#     s3_bucket="s3-data-bootcamp-20220116234309854700000005",
+#     s3_key="user_purchase_data",
+#     aws_conn_postgres_id="postgres_default",
+#     aws_conn_id="aws_default",
+#     dag=dag,
+# )
 
 # s3_to_postgres_operator
 

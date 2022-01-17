@@ -72,7 +72,7 @@ class S3ToPostgresTransfer(BaseOperator):
 
         print("miau")
 
-        print(read_key(self, self.s3_key, self.s3_bucket))
+        print(self.s3.read_key(self, self.s3_key, self.s3_bucket))
 
         # Validate if the file source exist or not in the bucket.
         # if self.wildcard_match:

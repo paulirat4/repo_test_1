@@ -76,7 +76,9 @@ class S3ToPostgresTransfer(BaseOperator):
         # if self.wildcard_match:
         print(
             "answer"
-            + check_for_wildcard_key(self, self.s3_key, self.s3_bucket, delimiter="")
+            + self.s3.check_for_wildcard_key(
+                self, self.s3_key, self.s3_bucket, delimiter=""
+            )
         )
 
         # if not self.s3.check_for_wildcard_key(self.s3_key, self.s3_bucket):

@@ -70,6 +70,8 @@ class S3ToPostgresTransfer(BaseOperator):
         self.log.info("Downloading S3 file")
         self.log.info(self.s3_key + ", " + self.s3_bucket)
 
+        print("miau")
+
         # Validate if the file source exist or not in the bucket.
         # if self.wildcard_match:
         print(

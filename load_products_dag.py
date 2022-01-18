@@ -100,10 +100,10 @@ class S3ToPostgresTransfer(BaseOperator):
             "invoice_number": "string",
             "stock_code": "string",
             "detail": "string",
-            "quantity": "float64",
+            "quantity": "integer",
             "invoice_date": "string",
-            "unit_price": "float64",
-            "customer_id": "float64",
+            "unit_price": "number",
+            "customer_id": "integer",
             "country": "string"
         }
 
@@ -173,7 +173,7 @@ class S3ToPostgresTransfer(BaseOperator):
             self.current_table,
             list_df_products,
             target_fields=list_target_fields,
-            commit_every=10000,
+            commit_every=1000,
             replace=False)
 
         # Query and print the values of the table products in the console.

@@ -6,6 +6,7 @@ from airflow.hooks.S3_hook import S3Hook
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 from airflow.exceptions import AirflowException
+from datetime import datetime
 import os.path
 import pandas as pd
 import io
@@ -252,6 +253,7 @@ dag = DAG(
     schedule_interval="@once",
     start_date=datetime(2021, 10, 1),
     catchup=False,
+    dagrun_timeout=datetime.timedelta(minutes=10),
 )
 
 welcome_operator = PythonOperator(
@@ -263,9 +265,9 @@ s3_to_postgres_operator = S3ToPostgresTransfer(
     schema="dbname",  #'public'
     table="products",
     # s3_bucket="bucket-test-45",
-    s3_bucket="s3-data-bootcamp-20220116234309854700000005",
+    s3_bucket="s3-data-bootcamp-20220118015651710500000005",
     # s3_key="test_1.csv",
-    s3_key="user_purchase_new.csv",
+    s3_key="user_purchase_data.csv",
     aws_conn_postgres_id="postgres_default",
     aws_conn_id="aws_default",
     dag=dag,

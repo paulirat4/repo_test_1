@@ -102,7 +102,7 @@ class S3ToPostgresTransfer(BaseOperator):
             "detail": "string",
             "quantity": "int",
             "invoice_date": "string",
-            "unit_price": "number",
+            "unit_price": "float64",
             "customer_id": "int",
             "country": "string"
         }

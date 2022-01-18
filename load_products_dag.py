@@ -6,7 +6,7 @@ from airflow.hooks.S3_hook import S3Hook
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 from airflow.exceptions import AirflowException
-from datetime import datetime
+import datetime
 import os.path
 import pandas as pd
 import io

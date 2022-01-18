@@ -97,22 +97,15 @@ class S3ToPostgresTransfer(BaseOperator):
 
         # schema definition for data types of the source.
         schema = {
-            "producto": "string",
-            "presentacion": "string",
-            "marca": "string",
-            "categoria": "string",
-            "catalogo": "string",
-            "precio": "float64",
-            "cadenaComercial": "string",
-            "giro": "string",
-            "nombreComercial": "string",
-            "direccion": "string",
-            "estado": "string",
-            "municipio": "string",
-            "latitud": "float64",
-            "longitud": "float64",
+            "invoice_number": "string",
+            "stock_code": "string",
+            "detail": "string",
+            "quantity": "integer",
+            "invoice_date": "string",
+            "unit_price": "float64",
+            "customer_id": "integer",
+            "country": "string"
         }
-        date_cols = ["fechaRegistro"]
 
         # read a csv file with the properties required.
         df_products = pd.read_csv(

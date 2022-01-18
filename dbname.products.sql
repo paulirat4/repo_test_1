@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS dbname.products
     detail VARCHAR(1000),
     quantity INT,
     invoice_date TIMESTAMP,
-    unit_price NUMERIC(8,3),
+    unit_price NUMERIC(10,5),
     customer_id INT,
     country VARCHAR(20) 
 );

@@ -122,7 +122,7 @@ class S3ToPostgresTransfer(BaseOperator):
             quotechar='"',
             low_memory=False,
             # parse_dates=date_cols,
-            dtype=schema,
+            dtype=schema
         )
         self.log.info(df_products)
         self.log.info(df_products.info())
@@ -180,7 +180,7 @@ class S3ToPostgresTransfer(BaseOperator):
             self.current_table,
             list_df_products,
             target_fields=list_target_fields,
-            commit_every=1000,
+            commit_every=10000,
             replace=False)
 
         # Query and print the values of the table products in the console.

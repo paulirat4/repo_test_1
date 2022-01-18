@@ -6,7 +6,6 @@ from airflow.hooks.S3_hook import S3Hook
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 from airflow.exceptions import AirflowException
-import datetime
 import os.path
 import pandas as pd
 import io
@@ -233,7 +232,7 @@ class S3ToPostgresTransfer(BaseOperator):
         #     )
 
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # The DAG object; we'll need this to instantiate a DAG
 from airflow import DAG

@@ -100,10 +100,10 @@ class S3ToPostgresTransfer(BaseOperator):
             "invoice_number": "string",
             "stock_code": "string",
             "detail": "string",
-            "quantity": "integer",
+            "quantity": "int",
             "invoice_date": "string",
             "unit_price": "number",
-            "customer_id": "integer",
+            "customer_id": "int",
             "country": "string"
         }
 

@@ -232,7 +232,8 @@ class S3ToPostgresTransfer(BaseOperator):
         #     )
 
 
-from datetime import datetime, timedelta
+from datetime import datetime
+import datetime as dt
 
 # The DAG object; we'll need this to instantiate a DAG
 from airflow import DAG
@@ -252,7 +253,7 @@ dag = DAG(
     schedule_interval="@once",
     start_date=datetime(2021, 10, 1),
     catchup=False,
-    dagrun_timeout=datetime.timedelta(minutes=10),
+    dagrun_timeout=dt.timedelta(minutes=10),
 )
 
 welcome_operator = PythonOperator(

@@ -124,7 +124,7 @@ class S3ToPostgresTransfer(BaseOperator):
         df_products = df_products.replace(r"[\"]", r"'")
         list_df_products = df_products.values.tolist()
         list_df_products = [tuple(x) for x in list_df_products]
-        list_df_products = list_df_products[400:700]
+        list_df_products = list_df_products[400:600]
         self.log.info(list_df_products)
 
         # Read the file with the DDL SQL to create the table products in postgres DB.

@@ -173,8 +173,7 @@ class S3ToPostgresTransfer(BaseOperator):
             "invoice_date",
             "unit_price",
             "customer_id",
-            "country",
-        ]
+            "country"]
 
         self.current_table = self.schema + "." + self.table
         self.pg_hook.insert_rows(
@@ -182,8 +181,7 @@ class S3ToPostgresTransfer(BaseOperator):
             list_df_products,
             target_fields=list_target_fields,
             commit_every=1000,
-            replace=False,
-        )
+            replace=False)
 
         # Query and print the values of the table products in the console.
         self.request = (
@@ -270,7 +268,7 @@ s3_to_postgres_operator = S3ToPostgresTransfer(
     s3_key="user_purchase_data.csv",
     aws_conn_postgres_id="postgres_default",
     aws_conn_id="aws_default",
-    dag=dag,
+    dag=dag
 )
 
 s3_to_postgres_operator

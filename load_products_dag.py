@@ -121,6 +121,7 @@ class S3ToPostgresTransfer(BaseOperator):
         self.log.info(df_products.info())
 
         # formatting and converting the dataframe object in list to prepare the income of the next steps.
+        df_products.CustomerID.fillna(0, inplace = True)
         df_products = df_products.replace(r"[\"]", r"'")
         list_df_products = df_products.values.tolist()
         list_df_products = [tuple(x) for x in list_df_products]
@@ -257,7 +258,7 @@ s3_to_postgres_operator = S3ToPostgresTransfer(
     schema="dbname",  #'public'
     table="products",
     # s3_bucket="bucket-test-45",
-    s3_bucket="s3-data-bootcamp-20220118015651710500000005",
+    s3_bucket="s3-data-bootcamp-20220119015947542600000005",
     # s3_key="test_1.csv",
     s3_key="user_purchase_data.csv",
     aws_conn_postgres_id="postgres_default",

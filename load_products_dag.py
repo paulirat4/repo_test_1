@@ -175,7 +175,7 @@ class S3ToPostgresTransfer(BaseOperator):
             self.current_table,
             list_df_products,
             target_fields=list_target_fields,
-            commit_every=1000,
+            commit_every=10000,
             replace=False)
 
         # Query and print the values of the table products in the console.
@@ -246,7 +246,7 @@ dag = DAG(
     schedule_interval="@once",
     start_date=datetime(2021, 10, 1),
     catchup=False,
-    dagrun_timeout=dt.timedelta(minutes=10),
+    dagrun_timeout=dt.timedelta(minutes=20),
 )
 
 welcome_operator = PythonOperator(

@@ -107,7 +107,7 @@ class S3ToPostgresTransfer(BaseOperator):
         }
 
         # read a csv file with the properties required.
-        df_products = pd.read_csv(
+        df_user_purchase = pd.read_csv(
             io.StringIO(list_srt_content),
             header=0,
             delimiter=",",
@@ -116,28 +116,29 @@ class S3ToPostgresTransfer(BaseOperator):
             # parse_dates=date_cols,
             dtype=schema
         )
-        self.log.info(df_products)
-        self.log.info(df_products.info())
+        self.log.info(df_user_purchase)
+        self.log.info(df_user_purchase.info())
 
         # formatting and converting the dataframe object in list to prepare the income of the next steps.
-        df_products.CustomerID.fillna(0, inplace = True)
-        df_products = df_products.replace(r"[\"]", r"'")
-        list_df_products = df_products.values.tolist()
-        list_df_products = [tuple(x) for x in list_df_products]
-        #list_df_products = list_df_products[621:623]
-        self.log.info(list_df_products)
+        df_user_purchase.CustomerID.fillna(0, inplace = True)
+        df_user_purchase = df_user_purchase.replace(r"[\"]", r"'")
+        list_df_user_purchase = df_user_purchase.values.tolist()
+        list_df_user_purchase = [tuple(x) for x in list_df_user_purchase]
+        #list_df_user_purchase = list_df_user_purchase[621:623]
+        self.log.info(list_df_user_purchase)
 
         # Read the file with the DDL SQL to create the table products in postgres DB.
-        nombre_de_archivo = "dbname.products.sql"
+        nombre_de_archivo = "dbname.user_purchase.sql"
 
         print("i reached here")
 
         print(os.path.sep)
 
-        # ruta_archivo = +os.path.sep + nombre_de_archivo
+        ruta_archivo = +os.path.sep + nombre_de_archivo
         # ruta_archivo = str(os.path.sep) + nombre_de_archivo
         #ruta_archivo = "/opt/airflow/dags/repo/dbname.products.sql"
-        ruta_archivo = "/Users/ana.rendon/airflow/dags/dbname.products.sql"
+        #ruta_archivo = "/Users/ana.rendon/airflow/dags/dbname.products.sql"
+
 
         self.log.info(ruta_archivo)
         proposito_del_archivo = "r"  # r es de Lectura
@@ -173,7 +174,7 @@ class S3ToPostgresTransfer(BaseOperator):
         self.current_table = self.schema + "." + self.table
         # self.pg_hook.insert_rows(
         #     self.current_table,
-        #     list_df_products,
+        #     list_df_user_purchase,
         #     target_fields=list_target_fields,
         #     commit_every=1000,
         #     replace=False)

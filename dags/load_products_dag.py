@@ -120,7 +120,8 @@ class S3ToPostgresTransfer(BaseOperator):
         self.log.info(df_user_purchase.info())
 
         # formatting and converting the dataframe object in list to prepare the income of the next steps.
-        df_user_purchase.CustomerID.fillna(0, inplace = True)
+        #df_user_purchase.CustomerID.fillna(0, inplace = True)
+        df_user_purchase.dropna(axis=0, subset = 'CustomerID', inplace = True)
         df_user_purchase = df_user_purchase.replace(r"[\"]", r"'")
         list_df_user_purchase = df_user_purchase.values.tolist()
         list_df_user_purchase = [tuple(x) for x in list_df_user_purchase]
@@ -357,7 +358,7 @@ class postgresql_to_s3_bucket(BaseOperator):
         #     s3_client.put_object(Bucket=self.s3_bucket, Key=self.s3_key, Body=f.getvalue())
 
 
-class fromS3toS3(BaseOperator):
+class fromS3toS3XML(BaseOperator):
     
     template_fields = ()
 
@@ -382,7 +383,7 @@ class fromS3toS3(BaseOperator):
         *args,
         **kwargs
     ):
-        super(fromS3toS3, self).__init__(*args, **kwargs)
+        super(fromS3toS3XML, self).__init__(*args, **kwargs)
         self.schema = schema
         self.table = table
         self.s3_bucket = s3_bucket
@@ -447,6 +448,85 @@ class fromS3toS3(BaseOperator):
 
         self.s3.load_string(bucket_name=self.s3_bucket, key="review_logs.xml", string_data=log_reviews_xml)
 
+class fromS3toS3TabDelimited(BaseOperator):
+    
+    template_fields = ()
+
+    template_ext = ()
+
+    ui_color = "#ededed"
+
+    @apply_defaults
+    def __init__(
+        self,
+        schema,
+        table,
+        s3_bucket,
+        s3_key,
+        aws_conn_postgres_id="postgres_default",
+        aws_conn_id="aws_default",
+        verify=None,
+        wildcard_match=False,
+        copy_options=tuple(),
+        autocommit=False,
+        parameters=None,
+        *args,
+        **kwargs
+    ):
+        super(fromS3toS3XML, self).__init__(*args, **kwargs)
+        self.schema = schema
+        self.table = table
+        self.s3_bucket = s3_bucket
+        self.s3_key = s3_key
+        self.aws_conn_postgres_id = aws_conn_postgres_id
+        self.aws_conn_id = aws_conn_id
+        self.verify = verify
+        self.wildcard_match = wildcard_match
+        self.copy_options = copy_options
+        self.autocommit = autocommit
+        self.parameters = parameters
+
+    def execute(self, context):
+        
+        self.s3 = S3Hook(aws_conn_id=self.aws_conn_id, verify=self.verify)
+        
+        s3_key_object = self.s3.get_key(self.s3_key, self.s3_bucket)
+
+        # Read and decode the file into a list of strings.
+        list_srt_content = (
+            s3_key_object.get()["Body"].read().decode(encoding="utf-8", errors="ignore")
+        )
+
+        # schema definition for data types of the source.
+        schema = {
+            "invoice_number": "string",
+            "stock_code": "string",
+            "detail": "string",
+            "quantity": "int",
+            "invoice_date": "string",
+            "unit_price": "float64",
+            "customer_id": "int",
+            "country": "string"
+        }        
+
+        # read a csv file with the properties required.
+        user_purchase_df = pd.read_csv(
+            io.StringIO(list_srt_content),
+            header=0,
+            delimiter=",",
+            quotechar='"',
+            low_memory=False,
+            # parse_dates=date_cols,
+            dtype=schema
+        )
+        # some transformations for converting into tab delimited txt
+
+        user_purchase_df.dropna(axis=0, subset = 'CustomerID', inplace = True)
+        usr_purchase.to_csv(r'user_purchase_tab_del.txt', header=None, index=None, sep='	')
+
+        self.s3.load_file(bucket_name = self.s3_bucket, filename = "user_purchase_tab_del.txt", key = self.s3_key)
+
+
 
 from datetime import datetime
 import datetime as dt
@@ -499,6 +579,15 @@ dag4 = DAG(
     dagrun_timeout=dt.timedelta(minutes=70),
 )
 
+dag5 = DAG(
+    "dag_trigger_log_review_xml_creation",
+    description="put into s3 bucket tab delimited text required",
+    schedule_interval="@once",
+    start_date=datetime(2021, 10, 1),
+    catchup=False,
+    dagrun_timeout=dt.timedelta(minutes=20),
+)
+
 welcome_operator = PythonOperator(
     task_id="welcome_task", python_callable=print_welcome, dag=dag1
 )
@@ -516,7 +605,7 @@ s3_to_postgres_operator = S3ToPostgresTransfer(
     dag=dag1
 )
 
-from_s3_to_s3= fromS3toS3(
+from_s3_to_s3= fromS3toS3XML(
     task_id="from_s3_to_s3",
     schema="dbname",  #'public'
     table="user_purchase",
@@ -559,10 +648,25 @@ postgres_to_s3 = postgresql_to_s3_bucket(
     aws_conn_id="aws_default",
     dag=dag4
 )
-s3_to_postgres_operator
+
+from_s3_to_s3_tab_delimited= fromS3toS3TabDelimited(
+    task_id="from_s3_to_s3_tab_del",
+    schema="dbname",  #'public'
+    table="user_purchase",
+    # s3_bucket="bucket-test-45",
+    s3_bucket="s3-data-bootcamp-20220213075222682000000005",
+    # s3_key="test_1.csv",
+    s3_key="user_purchase_tab_delimited.tx",
+    aws_conn_postgres_id="postgres_default",
+    aws_conn_id="aws_default",
+    dag=dag5
+)
+
+#s3_to_postgres_operator
 #trigger_glue_job_movies_reviews
 #from_s3_to_s3
 #trigger_glue_job_log_reviews
 #postgres_to_s3
+from_s3_to_s3_tab_delimited
 
 # welcome_operator  # .set_downstream(s3_to_postgres_operator)

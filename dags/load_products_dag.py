@@ -473,7 +473,7 @@ class fromS3toS3TabDelimited(BaseOperator):
         *args,
         **kwargs
     ):
-        super(fromS3toS3XML, self).__init__(*args, **kwargs)
+        super(fromS3toS3TabDelimited, self).__init__(*args, **kwargs)
         self.schema = schema
         self.table = table
         self.s3_bucket = s3_bucket

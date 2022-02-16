@@ -446,7 +446,7 @@ class fromS3toS3XML(BaseOperator):
             log_reviews_xml = log_reviews_xml + review
         log_reviews_xml = '<reviewlog>' + log_reviews_xml + '</reviewlog>'
 
-        self.s3.load_string(bucket_name=self.s3_bucket, key="review_logs_.xml", string_data=log_reviews_xml)
+        self.s3.load_string(bucket_name=self.s3_bucket, key="review_log.xml", string_data=log_reviews_xml)
 
 class fromS3toS3TabDelimited(BaseOperator):
     

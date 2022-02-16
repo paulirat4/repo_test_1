@@ -524,7 +524,7 @@ class fromS3toS3TabDelimited(BaseOperator):
 
         user_purchase_str = re.sub("\t\t+" , '\t', user_purchase_str)
 
-        x = re.sub("\n " , '\n', x)
+        user_purchase_str = re.sub("\n " , '\n', user_purchase_str)
 
         user_purchase_str = re.sub(" 536" , '536', user_purchase_str)
 

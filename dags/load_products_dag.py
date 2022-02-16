@@ -519,6 +519,8 @@ class fromS3toS3TabDelimited(BaseOperator):
             # parse_dates=date_cols,
             dtype=schema
         )
+
+        print ("i did until here!")
         # some transformations for converting into tab delimited txt
 
         #user_purchase_df.dropna(axis=0, subset = 'CustomerID', inplace = True)
@@ -537,7 +539,7 @@ class fromS3toS3TabDelimited(BaseOperator):
         # user_purchase_str = re.sub("\t\t+" , '\t', user_purchase_str)
 
         # user_purchase_str = re.sub(" 536" , '536', user_purchase_str)
-        user_purchase_str = "miau"
+        user_purchase_str = 'miau'
 
         self.s3.load_string(bucket_name=self.s3_bucket, key="user_purchase_tab_del.txt", string_data=user_purchase_str)
 

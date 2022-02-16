@@ -523,20 +523,20 @@ class fromS3toS3TabDelimited(BaseOperator):
 
         user_purchase_df.dropna(axis=0, subset = 'CustomerID', inplace = True)
 
-"""         user_purchase_df['Description'] = user_purchase_df['Description'].replace(r'\s\s+', '', regex=True)
+        # user_purchase_df['Description'] = user_purchase_df['Description'].replace(r'\s\s+', '', regex=True)
 
-        user_purchase_str = user_purchase_df.to_string(justify='justify-all',
-                        col_space ={'InvoiceNo': 0 ,'StockCode': 10,'Description': 40,'Quantity': 5,'InvoiceDate': 20, 'UnitPrice': 5,'CustomerID': 10,'Country': 15 },
-                        header=False,
-                  index=False
-                       )
-        user_purchase_str = re.sub("   *" , '\t', user_purchase_str)
+        # user_purchase_str = user_purchase_df.to_string(justify='justify-all',
+        #                 col_space ={'InvoiceNo': 0 ,'StockCode': 10,'Description': 40,'Quantity': 5,'InvoiceDate': 20, 'UnitPrice': 5,'CustomerID': 10,'Country': 15 },
+        #                 header=False,
+        #           index=False
+        #                )
+        # user_purchase_str = re.sub("   *" , '\t', user_purchase_str)
 
-        user_purchase_str = re.sub("\t " , "\t", user_purchase_str)
+        # user_purchase_str = re.sub("\t " , "\t", user_purchase_str)
 
-        user_purchase_str = re.sub("\t\t+" , '\t', user_purchase_str)
+        # user_purchase_str = re.sub("\t\t+" , '\t', user_purchase_str)
 
-        user_purchase_str = re.sub(" 536" , '536', user_purchase_str) """
+        # user_purchase_str = re.sub(" 536" , '536', user_purchase_str)
         user_purchase_str = "miau"
 
         self.s3.load_string(bucket_name=self.s3_bucket, key="user_purchase_tab_del.txt", string_data=user_purchase_str)

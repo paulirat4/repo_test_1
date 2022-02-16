@@ -526,7 +526,7 @@ class fromS3toS3TabDelimited(BaseOperator):
 
         user_purchase_str = re.sub("\n " , '\n', user_purchase_str)
 
-        user_purchase_str = re.sub(" 536" , '536', user_purchase_str)
+        user_purchase_str = user_purchase_str[1:]
 
         self.s3.load_string(bucket_name=self.s3_bucket, key="user_purchase_tab_del.txt", string_data=user_purchase_str)
 

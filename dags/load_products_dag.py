@@ -124,7 +124,7 @@ class S3ToPostgresTransfer(BaseOperator):
         df_user_purchase.dropna(axis=0, subset = 'CustomerID', inplace = True)
         df_user_purchase = df_user_purchase.replace(r"[\"]", r"'")
         list_df_user_purchase = df_user_purchase.values.tolist()
-        list_df_user_purchase = [tuple(x) for x in list_df_user_purchase]
+        list_df_user_purchase = [tuple(user_purchase_str) for x in list_df_user_purchase]
         #list_df_user_purchase = list_df_user_purchase[621:623]
         self.log.info(list_df_user_purchase)
 
@@ -522,9 +522,27 @@ class fromS3toS3TabDelimited(BaseOperator):
         # some transformations for converting into tab delimited txt
 
         user_purchase_df.dropna(axis=0, subset = 'CustomerID', inplace = True)
-        usr_purchase.to_csv(r'user_purchase_tab_del.txt', header=None, index=None, sep='	')
 
-        self.s3.load_file(bucket_name = self.s3_bucket, filename = "user_purchase_tab_del.txt", key = "user_purchase_tab_delimited.tx")
+        user_purchase_df['Description'] = user_purchase_df['Description'].replace(r'\s\s+', '', regex=True)
+
+        user_purchase_str = user_purchase_df.to_string(justify='justify-all',
+                        col_space ={'InvoiceNo': 0 ,'StockCode': 10,'Description': 40,'Quantity': 5,'InvoiceDate': 20, 'UnitPrice': 5,'CustomerID': 10,'Country': 15 },
+                        header=False,
+                  index=False
+                       )
+        user_purchase_str = re.sub("   *" , '\t', user_purchase_str)
+
+        user_purchase_str = re.sub("\t " , "\t", user_purchase_str)
+
+        user_purchase_str = re.sub("\t\t+" , '\t', user_purchase_str)
+
+        user_purchase_str = re.sub(" 536" , '536', user_purchase_str)
+
+        self.s3.load_string(bucket_name=self.s3_bucket, key="user_purchase_tab_del.txt", string_data=user_purchase_str)
+
+
+
+        #self.s3.load_file(bucket_name = self.s3_bucket, filename = "user_purchase_tab_del.txt", key = "user_purchase_tab_delimited.tx")
 
 
 
@@ -654,7 +672,7 @@ from_s3_to_s3_tab_delimited= fromS3toS3TabDelimited(
     schema="dbname",  #'public'
     table="user_purchase",
     # s3_bucket="bucket-test-45",
-    s3_bucket="s3-data-bootcamp-20220214001738631800000006",
+    s3_bucket="s3-data-bootcamp-20220216024912394000000007",
     # s3_key="test_1.csv",
     s3_key="user_purchase_data.csv",
     aws_conn_postgres_id="postgres_default",

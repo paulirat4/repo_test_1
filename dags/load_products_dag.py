@@ -514,9 +514,11 @@ class fromS3toS3TabDelimited(BaseOperator):
         user_purchase_df['Description'] = user_purchase_df['Description'].replace(r'\s\s+', '', regex=True)
 
         user_purchase_str = user_purchase_df.to_string(justify='justify-all',
+                        index_names=False,
                         col_space ={'InvoiceNo': 0 ,'StockCode': 10,'Description': 40,'Quantity': 5,'InvoiceDate': 20, 'UnitPrice': 5,'CustomerID': 10,'Country': 15 },
                         header=False,
-                  index=False
+                  index=False,
+
                        )
         user_purchase_str = re.sub("   *" , '\t', user_purchase_str)
 

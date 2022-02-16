@@ -90,43 +90,42 @@ class S3ToPostgresTransfer(BaseOperator):
         s3_key_object = self.s3.get_key(self.s3_key, self.s3_bucket)
 
         # Read and decode the file into a list of strings.
-        list_srt_content = (
-            s3_key_object.get()["Body"].read().decode(encoding="utf-8", errors="ignore")
-        )
+        #--list_srt_content = (
+        #    s3_key_object.get()["Body"].read().decode(encoding="utf-8", errors="ignore")
+        #--)
 
-        # schema definition for data types of the source.
-        schema = {
-            "invoice_number": "string",
-            "stock_code": "string",
-            "detail": "string",
-            "quantity": "int",
-            "invoice_date": "string",
-            "unit_price": "float64",
-            "customer_id": "int",
-            "country": "string"
-        }
+        #-- schema definition for data types of the source.
+        # schema = {
+        #     "invoice_number": "string",
+        #     "stock_code": "string",
+        #     "detail": "string",
+        #     "quantity": "int",
+        #     "invoice_date": "string",
+        #     "unit_price": "float64",
+        #     "customer_id": "int",
+        #     "country": "string"
+        # }
 
-        # read a csv file with the properties required.
-        df_user_purchase = pd.read_csv(
-            io.StringIO(list_srt_content),
-            header=0,
-            delimiter=",",
-            quotechar='"',
-            low_memory=False,
-            # parse_dates=date_cols,
-            dtype=schema
-        )
-        self.log.info(df_user_purchase)
-        self.log.info(df_user_purchase.info())
+        #-- read a csv file with the properties required.
+        # df_user_purchase = pd.read_csv(
+        #     io.StringIO(list_srt_content),
+        #     header=0,
+        #     delimiter=",",
+        #     quotechar='"',
+        #     low_memory=False,
+        #     # parse_dates=date_cols,
+        #     dtype=schema
+        # )
+        # self.log.info(df_user_purchase)
+        # self.log.info(df_user_purchase.info())
 
-        # formatting and converting the dataframe object in list to prepare the income of the next steps.
-        #df_user_purchase.CustomerID.fillna(0, inplace = True)
-        df_user_purchase.dropna(axis=0, subset = 'CustomerID', inplace = True)
-        df_user_purchase = df_user_purchase.replace(r"[\"]", r"'")
-        list_df_user_purchase = df_user_purchase.values.tolist()
-        list_df_user_purchase = [tuple(user_purchase_str) for x in list_df_user_purchase]
-        #list_df_user_purchase = list_df_user_purchase[621:623]
-        self.log.info(list_df_user_purchase)
+        # -- formatting and converting the dataframe object in list to prepare the income of the next steps.
+        # this not * df_user_purchase.CustomerID.fillna(0, inplace = True)
+        # df_user_purchase.dropna(axis=0, subset = 'CustomerID', inplace = True)
+        # df_user_purchase = df_user_purchase.replace(r"[\"]", r"'")
+        # list_df_user_purchase = df_user_purchase.values.tolist()
+        # list_df_user_purchase = [tuple(user_purchase_str) for x in list_df_user_purchase]
+        # self.log.info(list_df_user_purchase)
 
         # Read the file with the DDL SQL to create the table products in postgres DB.
         nombre_de_archivo = "dbname.user_purchase.sql"
@@ -179,10 +178,10 @@ class S3ToPostgresTransfer(BaseOperator):
         #     target_fields=list_target_fields,
         #     commit_every=1000,
         #     replace=False)
-        with open('/Users/ana.rendon/airflow/dags/purchase_data_del.txt') as f:
+        #--with open('/Users/ana.rendon/airflow/dags/purchase_data_del.txt') as f:
             #f.write("\n".join(list_target_fields).encode("utf-8"))
             #f.flush()  
-            self.pg_hook.bulk_load(self.current_table, f.name)
+        self.pg_hook.bulk_load(self.current_table, s3_key_object.name)
 
         # # Query and print the values of the table products in the console.
         # self.request = (
@@ -609,9 +608,9 @@ s3_to_postgres_operator = S3ToPostgresTransfer(
     schema="dbname",  #'public'
     table="user_purchase",
     # s3_bucket="bucket-test-45",
-    s3_bucket="ss3-data-bootcamp-20220216024912394000000007",  
+    s3_bucket="s3-data-bootcamp-20220216155913524300000007",  
     # s3_key="test_1.csv",
-    s3_key="user_purchase_data.csv",
+    s3_key="user_purchase_tab_delimited.txt",
     aws_conn_postgres_id="postgres_default",
     aws_conn_id="aws_default",
     dag=dag1
@@ -679,6 +678,6 @@ from_s3_to_s3_tab_delimited= fromS3toS3TabDelimited(
 #from_s3_to_s3
 #trigger_glue_job_log_reviews
 #ostgres_to_s3
-from_s3_to_s3_tab_delimited
+from_s3_to_s3_tab_delimited > s3_to_postgres_operator
 
 # welcome_operator  # .set_downstream(s3_to_postgres_operator)

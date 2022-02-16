@@ -511,24 +511,26 @@ class fromS3toS3TabDelimited(BaseOperator):
         # some transformations for converting into tab delimited txt
         user_purchase_df.dropna(inplace = True)
 
-        user_purchase_df['Description'] = user_purchase_df['Description'].replace(r'\s\s+', '', regex=True)
+        # user_purchase_df['Description'] = user_purchase_df['Description'].replace(r'\s\s+', '', regex=True)
 
-        user_purchase_str = user_purchase_df.to_string(justify='justify-all',
-                        index_names=False,
-                        col_space ={'InvoiceNo': 0 ,'StockCode': 10,'Description': 40,'Quantity': 5,'InvoiceDate': 20, 'UnitPrice': 5,'CustomerID': 10,'Country': 15 },
-                        header=False,
-                  index=False,
+        # user_purchase_str = user_purchase_df.to_string(justify='justify-all',
+        #                 index_names=False,
+        #                 col_space ={'InvoiceNo': 0 ,'StockCode': 10,'Description': 40,'Quantity': 5,'InvoiceDate': 20, 'UnitPrice': 5,'CustomerID': 10,'Country': 15 },
+        #                 header=False,
+        #           index=False,
 
-                       )
-        user_purchase_str = re.sub("   *" , '\t', user_purchase_str)
+        #                )
+        # user_purchase_str = re.sub("   *" , '\t', user_purchase_str)
 
-        user_purchase_str = re.sub("\t " , "\t", user_purchase_str)
+        # user_purchase_str = re.sub("\t " , "\t", user_purchase_str)
 
-        user_purchase_str = re.sub("\t\t+" , '\t', user_purchase_str)
+        # user_purchase_str = re.sub("\t\t+" , '\t', user_purchase_str)
 
-        user_purchase_str = re.sub("\n " , '\n', user_purchase_str)
+        # user_purchase_str = re.sub("\n " , '\n', user_purchase_str)
 
-        user_purchase_str = user_purchase_str[1:]
+        # user_purchase_str = user_purchase_str[1:]
+
+        user_purchase_df.to_csv(r'user_purchase_tab_del.txt', header=None, index=None, sep='	')
 
         self.s3.load_string(bucket_name=self.s3_bucket, key="user_purchase_tab_del.txt", string_data=user_purchase_str, replace=True)
 
@@ -666,7 +668,7 @@ from_s3_to_s3_tab_delimited= fromS3toS3TabDelimited(
     # s3_bucket="bucket-test-45",
     s3_bucket="s3-data-bootcamp-20220216024912394000000007",
     # s3_key="test_1.csv",
-    s3_key="user_purchase_data.csv",
+    s3_key="little_user_purchase.csv",
     aws_conn_postgres_id="postgres_default",
     aws_conn_id="aws_default",
     dag=dag5

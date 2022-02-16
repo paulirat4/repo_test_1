@@ -682,9 +682,9 @@ from_s3_to_s3_tab_delimited= fromS3toS3TabDelimited(
 
 #s3_to_postgres_operator
 #trigger_glue_job_movies_reviews
-from_s3_to_s3
+#from_s3_to_s3
 #trigger_glue_job_log_reviews
 #ostgres_to_s3
-#from_s3_to_s3_tab_delimited
+from_s3_to_s3_tab_delimited
 
 # welcome_operator  # .set_downstream(s3_to_postgres_operator)

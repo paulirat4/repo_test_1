@@ -521,7 +521,7 @@ class fromS3toS3TabDelimited(BaseOperator):
         )
         # some transformations for converting into tab delimited txt
 
-        user_purchase_df.dropna(axis=0, subset = 'CustomerID', inplace = True)
+        #user_purchase_df.dropna(axis=0, subset = 'CustomerID', inplace = True)
 
         # user_purchase_df['Description'] = user_purchase_df['Description'].replace(r'\s\s+', '', regex=True)
 

@@ -530,7 +530,7 @@ class fromS3toS3TabDelimited(BaseOperator):
 
         user_purchase_str = user_purchase_str[1:]
 
-        self.s3.load_string(bucket_name=self.s3_bucket, key="user_purchase_tab_del.txt", string_data=user_purchase_str)
+        self.s3.load_string(bucket_name=self.s3_bucket, key="user_purchase_tab_del.txt", string_data=user_purchase_str, replace=True)
 
 
 
@@ -666,7 +666,7 @@ from_s3_to_s3_tab_delimited= fromS3toS3TabDelimited(
     # s3_bucket="bucket-test-45",
     s3_bucket="s3-data-bootcamp-20220216024912394000000007",
     # s3_key="test_1.csv",
-    s3_key="little_user_purchase.csv",
+    s3_key="user_purchase.csv",
     aws_conn_postgres_id="postgres_default",
     aws_conn_id="aws_default",
     dag=dag5

@@ -532,11 +532,11 @@ class fromS3toS3TabDelimited(BaseOperator):
 
         user_purchase_df.to_csv(r'user_purchase_tab_del.txt', header=None, index=None, sep='	')
 
-        self.s3.load_string(bucket_name=self.s3_bucket, key="user_purchase_tab_del.txt", string_data=user_purchase_str, replace=True)
+        #self.s3.load_string(bucket_name=self.s3_bucket, key="user_purchase_tab_del.txt", string_data=user_purchase_str, replace=True)
 
 
 
-        #self.s3.load_file(bucket_name = self.s3_bucket, filename = "user_purchase_tab_del.txt", key = "user_purchase_tab_delimited.tx")
+        self.s3.load_file(bucket_name = self.s3_bucket, filename = "user_purchase_tab_del.txt", key = "user_purchase_tab_delimited.tx")
 
 
 

@@ -670,7 +670,7 @@ from_s3_to_s3_tab_delimited= fromS3toS3TabDelimited(
     s3_key="user_purchase_data.csv",
     aws_conn_postgres_id="postgres_default",
     aws_conn_id="aws_default",
-    dag=dag1
+    dag=dag5
 )
 
 #s3_to_postgres_operator
@@ -679,5 +679,6 @@ from_s3_to_s3_tab_delimited= fromS3toS3TabDelimited(
 #trigger_glue_job_log_reviews
 #postgres_to_s3
 #from_s3_to_s3_tab_delimited >> s3_to_postgres_operator
-from_s3_to_s3_tab_delimited .set_downstream(s3_to_postgres_operator)
+#from_s3_to_s3_tab_delimited .set_downstream(s3_to_postgres_operator)
+from_s3_to_s3_tab_delimited
 # welcome_operator  # .set_downstream(s3_to_postgres_operator)

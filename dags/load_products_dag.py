@@ -608,7 +608,7 @@ s3_to_postgres_operator = S3ToPostgresTransfer(
     schema="dbname",  #'public'
     table="user_purchase",
     # s3_bucket="bucket-test-45",
-    s3_bucket="s3-data-bootcamp-20220216155913524300000007",  
+    s3_bucket="s3-data-bootcamp-20220217140740300800000007",  
     # s3_key="test_1.csv",
     s3_key="user_purchase_tab_delimited.txt",
     aws_conn_postgres_id="postgres_default",
@@ -673,12 +673,12 @@ from_s3_to_s3_tab_delimited= fromS3toS3TabDelimited(
     dag=dag5
 )
 
-#s3_to_postgres_operator
+s3_to_postgres_operator
 #trigger_glue_job_movies_reviews
 #from_s3_to_s3
 #trigger_glue_job_log_reviews
 #postgres_to_s3
 #from_s3_to_s3_tab_delimited >> s3_to_postgres_operator
 #from_s3_to_s3_tab_delimited .set_downstream(s3_to_postgres_operator)
-from_s3_to_s3_tab_delimited
+#from_s3_to_s3_tab_delimited
 # welcome_operator  # .set_downstream(s3_to_postgres_operator)

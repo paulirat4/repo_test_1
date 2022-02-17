@@ -670,7 +670,7 @@ from_s3_to_s3_tab_delimited= fromS3toS3TabDelimited(
     s3_key="user_purchase_data.csv",
     aws_conn_postgres_id="postgres_default",
     aws_conn_id="aws_default",
-    dag=dag5
+    dag=dag1
 )
 
 #s3_to_postgres_operator

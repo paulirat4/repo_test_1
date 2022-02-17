@@ -131,6 +131,12 @@ class S3ToPostgresTransfer(BaseOperator):
         nombre_de_archivo = "dbname.user_purchase.sql"
 
         print("i reached here")
+        
+        directory = os.getcwd()
+
+        print ("directory: " + directory)
+
+
 
         print(os.path.sep)
 

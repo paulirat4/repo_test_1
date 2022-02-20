@@ -166,9 +166,9 @@ class S3ToPostgresTransfer(BaseOperator):
             #--SQL_COMMAND_CREATE_TBL = manipulador_de_archivo.read()
             #--manipulador_de_archivo.close()
 
-            SQL_COMMAND_CREATE_TBL = self.s3.read_key("user_purchase_def.sql", self.s3_bucket)
+        SQL_COMMAND_CREATE_TBL = self.s3.read_key("user_purchase_def.sql", self.s3_bucket)
 
-            print(SQL_COMMAND_CREATE_TBL)
+        print(SQL_COMMAND_CREATE_TBL)
 
             # Display the content
             self.log.info(SQL_COMMAND_CREATE_TBL)

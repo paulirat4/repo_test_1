@@ -145,7 +145,8 @@ class S3ToPostgresTransfer(BaseOperator):
 
         #ruta_archivo = +os.path.sep + nombre_de_archivo
         #ruta_archivo = str(os.path.sep) + nombre_de_archivo
-        ruta_archivo = "/opt/airflow/dbname.user_purchase.sql"
+        #ruta_archivo = "/opt/airflow/dbname.user_purchase.sql"
+        ruta_archivo = "/opt/airflow/cbe4ea169166dba2197fa999a2627ca45935f9ad/dbname.user_purchase.sql"
         #ruta_archivo = "/Users/ana.rendon/airflow/dags/dbname.products.sql"
 
 

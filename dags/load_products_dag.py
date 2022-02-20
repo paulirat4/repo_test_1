@@ -131,16 +131,17 @@ class S3ToPostgresTransfer(BaseOperator):
         nombre_de_archivo = "dbname.user_purchase.sql"
 
         print("i reached here")
-        
-        directory = os.getcwd()
 
-        print ("directory: " + directory)
-        
-        for path, dirs, files in os.walk('/opt/airflow'):
-            print (files)
+        def list_files(startpath):
+            for root, dirs, files in os.walk(startpath):
+                level = root.replace(startpath, '').count(os.sep)
+                indent = ' ' * 4 * (level)
+                print('{}{}/'.format(indent, os.path.basename(root)))
+                subindent = ' ' * 4 * (level + 1)
+                for f in files:
+                    print('{}{}'.format(subindent, f))
 
-
-        print(os.path.sep)
+        list_files("/opt/airflow")
 
         #ruta_archivo = +os.path.sep + nombre_de_archivo
         #ruta_archivo = str(os.path.sep) + nombre_de_archivo

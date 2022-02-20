@@ -544,7 +544,7 @@ class fromS3toS3TabDelimited(BaseOperator):
 
 
 
-        self.s3.load_file(bucket_name = self.s3_bucket, filename = "user_purchase_tab_del.txt", key = "user_purchase_tab_delimited.txt")
+        self.s3.load_file(bucket_name = self.s3_bucket, filename = "user_purchase_tab_del.txt", key = "user_purchase_tab_delimited.txt", replace=True)
 
 
 

@@ -89,6 +89,8 @@ class S3ToPostgresTransfer(BaseOperator):
 
         s3_key_object = self.s3.get_key(self.s3_key, self.s3_bucket)
 
+        s3_key_obj_sql_file = self.s3.get_key("user_purchase_def.sql", self.s3_bucket)
+
         # Read and decode the file into a list of strings.
         #--list_srt_content = (
         #    s3_key_object.get()["Body"].read().decode(encoding="utf-8", errors="ignore")
@@ -156,13 +158,17 @@ class S3ToPostgresTransfer(BaseOperator):
         # ISO-8859-1 codificación preferidad por
         # Microsoft, en Linux es UTF-8
 
-        with open(
-            ruta_archivo, proposito_del_archivo, encoding=codificación
-        ) as manipulador_de_archivo:
+        #--with open(
+        #    ruta_archivo, proposito_del_archivo, encoding=codificación
+        #) as manipulador_de_archivo:
 
             # Read dile with the DDL CREATE TABLE
-            SQL_COMMAND_CREATE_TBL = manipulador_de_archivo.read()
-            manipulador_de_archivo.close()
+            #--SQL_COMMAND_CREATE_TBL = manipulador_de_archivo.read()
+            #--manipulador_de_archivo.close()
+
+            SQL_COMMAND_CREATE_TBL = self.s3.read_key("user_purchase_def.sql", self.s3_bucket)
+
+            print(SQL_COMMAND_CREATE_TBL)
 
             # Display the content
             self.log.info(SQL_COMMAND_CREATE_TBL)

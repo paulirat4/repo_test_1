@@ -167,7 +167,7 @@ class S3ToPostgresTransfer(BaseOperator):
             #--manipulador_de_archivo.close()
 
         SQL_COMMAND_CREATE_TBL = self.s3.read_key("user_purchase_def.sql", self.s3_bucket)
-        
+
             # Display the content
         self.log.info(SQL_COMMAND_CREATE_TBL)
 
@@ -195,7 +195,9 @@ class S3ToPostgresTransfer(BaseOperator):
         #--with open('/Users/ana.rendon/airflow/dags/purchase_data_del.txt') as f:
             #f.write("\n".join(list_target_fields).encode("utf-8"))
             #f.flush()  
-        self.pg_hook.bulk_load(self.current_table, s3_key_object.name)
+        self.connection = self.pg_hook.get_conn()
+
+        #----self.pg_hook.bulk_load(self.current_table, s3_key_object.name)
 
         # # Query and print the values of the table products in the console.
         # self.request = (

@@ -89,6 +89,8 @@ class S3ToPostgresTransfer(BaseOperator):
 
         s3_key_object = self.s3.get_key(self.s3_key, self.s3_bucket)
 
+        read_s3_object = self.s3.read_key(self.s3_key, self.s3_bucket)
+
         s3_key_obj_sql_file = self.s3.get_key("user_purchase_def.sql", self.s3_bucket)
 
         # Read and decode the file into a list of strings.
@@ -197,7 +199,7 @@ class S3ToPostgresTransfer(BaseOperator):
             #f.flush()  
         self.connection = self.pg_hook.get_conn()
 
-        self.pg_hook.bulk_load(self.current_table, s3_key_object)
+        self.pg_hook.bulk_load(self.current_table, read_s3_object)
 
         # # Query and print the values of the table products in the console.
         # self.request = (

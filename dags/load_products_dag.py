@@ -453,7 +453,7 @@ class fromS3toS3XML(BaseOperator):
             log_reviews_xml = log_reviews_xml + review
         log_reviews_xml = '<reviewlog>' + log_reviews_xml + '</reviewlog>'
 
-        self.s3.load_string(bucket_name=self.s3_bucket, key="review_log.xml", string_data=log_reviews_xml)
+        self.s3.load_string(bucket_name=self.s3_bucket, key="review_log.xml", string_data=log_reviews_xml, replace=True)
 
 class fromS3toS3TabDelimited(BaseOperator):
     
@@ -642,7 +642,7 @@ from_s3_to_s3= fromS3toS3XML(
     schema="dbname",  #'public'
     table="user_purchase",
     # s3_bucket="bucket-test-45",
-    s3_bucket="s3-data-bootcamp-20220216024912394000000007",
+    s3_bucket="s3-data-bootcamp-20220221035942029100000006",
     # s3_key="test_1.csv",
     s3_key="log_reviews_test.csv",
     aws_conn_postgres_id="postgres_default",
@@ -667,8 +667,8 @@ trigger_glue_job_log_reviews = AwsGlueJobOperator(
     #dag=dag2,
     dag=dag4,
     script_args= {'--log_review_xml_path':   's3://s3-data-bootcamp-20220206043241941100000001/review_logs.xml',
-    '--bucket_for_processed_data_path':   's3://processed-data-bucket-20220206043241941300000003/log_reviews/',
-    '--extra-jars':   's3://jars-paulirat-deb/spark-xml_2.11-0.4.0.jar'}
+    '--bucket_for_processed_data_path':   's3://processed-data-bucket-20220221035942029200000007/log_reviews',
+    '--extra-jars':   's3://resources-bucket-20220221050714948500000001/spark-xml_2.11-0.4.0.jar'}
         )
 postgres_to_s3 = postgresql_to_s3_bucket(
     task_id="dag_postgres_to_s3",
@@ -698,11 +698,11 @@ from_s3_to_s3_tab_delimited= fromS3toS3TabDelimited(
 
 #s3_to_postgres_operator
 #trigger_glue_job_movies_reviews
-#from_s3_to_s3
+from_s3_to_s3
 #trigger_glue_job_log_reviews
 #postgres_to_s3
 #from_s3_to_s3_tab_delimited >> s3_to_postgres_operator >> 
-trigger_glue_job_movies_reviews
+#trigger_glue_job_movies_reviews
 #from_s3_to_s3_tab_delimited .set_downstream(s3_to_postgres_operator)
 #from_s3_to_s3_tab_delimited
 # welcome_operator  # .set_downstream(s3_to_postgres_operator)

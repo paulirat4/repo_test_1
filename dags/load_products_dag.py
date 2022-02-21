@@ -652,11 +652,12 @@ from_s3_to_s3= fromS3toS3XML(
 
 trigger_glue_job_movies_reviews = AwsGlueJobOperator(
     job_name="etl-job-movies-reviews-",
+    region_name = "us-east-2",
     iam_role_name="glue_role_paulirat",
     task_id="job",
-    dag=dag1,
-    script_args= {'--example_movie_review_path':   's3://s3-data-bootcamp-20220221032700483000000008/example_movies_reviews.csv',
-    '--bucket_for_processed_data_path':   's3://processed-data-bucket-20220221032700482000000006/movie_reviews'}
+    dag=dag2,
+    script_args= {'--example_movie_review_path':   's3://s3-data-bootcamp-20220221035942029100000006/example_movies_reviews.csv',
+    '--bucket_for_processed_data_path':   's3://processed-data-bucket-20220221035942029200000007/movie_reviews'}
         )
 
 trigger_glue_job_log_reviews = AwsGlueJobOperator(

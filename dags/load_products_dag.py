@@ -197,7 +197,7 @@ class S3ToPostgresTransfer(BaseOperator):
             #f.flush()  
         self.connection = self.pg_hook.get_conn()
 
-        #----self.pg_hook.bulk_load(self.current_table, s3_key_object.name)
+        self.pg_hook.bulk_load(self.current_table, s3_key_object.name)
 
         # # Query and print the values of the table products in the console.
         # self.request = (

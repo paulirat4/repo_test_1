@@ -89,7 +89,9 @@ class S3ToPostgresTransfer(BaseOperator):
 
         s3_key_object = self.s3.get_key(self.s3_key, self.s3_bucket)
 
-        read_s3_object = self.s3.read_key(self.s3_key, self.s3_bucket)
+        read_s3_object = self.s3.download_file(self.s3_key, self.s3_bucket)
+
+        print (read_s3_object)
 
         s3_key_obj_sql_file = self.s3.get_key("user_purchase_def.sql", self.s3_bucket)
 

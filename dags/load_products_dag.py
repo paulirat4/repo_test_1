@@ -664,7 +664,8 @@ trigger_glue_job_log_reviews = AwsGlueJobOperator(
     job_name="etl-job-log-reviews-",
     iam_role_name="glue_role_paulirat",
     task_id="job_log_reviews",
-    dag=dag2,
+    #dag=dag2,
+    dag=dag4,
     script_args= {'--log_review_xml_path':   's3://s3-data-bootcamp-20220206043241941100000001/review_logs.xml',
     '--bucket_for_processed_data_path':   's3://processed-data-bucket-20220206043241941300000003/log_reviews/',
     '--extra-jars':   's3://jars-paulirat-deb/spark-xml_2.11-0.4.0.jar'}

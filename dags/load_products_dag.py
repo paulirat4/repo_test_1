@@ -345,7 +345,7 @@ class postgresql_to_s3_bucket(BaseOperator):
         self.pg_hook = PostgresHook(postgre_conn_id=self.aws_conn_postgres_id)  
 
         self.request = (
-            "SELECT * FROM " + self.current_table + " LIMIT 10000"
+            "SELECT * FROM " + self.current_table + " LIMIT 100000"
         )
         self.log.info(self.request)
         self.connection = self.pg_hook.get_conn()

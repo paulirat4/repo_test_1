@@ -666,7 +666,7 @@ trigger_glue_job_log_reviews = AwsGlueJobOperator(
     task_id="job_log_reviews",
     #dag=dag2,
     dag=dag4,
-    script_args= {'--log_review_xml_path':   's3://s3-data-bootcamp-20220206043241941100000001/review_logs.xml',
+    script_args= {'--log_review_xml_path':   's3://s3-data-bootcamp-20220221035942029100000006/review_log.xml',
     '--bucket_for_processed_data_path':   's3://processed-data-bucket-20220221035942029200000007/log_reviews',
     '--extra-jars':   's3://resources-bucket-20220221050714948500000001/spark-xml_2.11-0.4.0.jar'}
         )
@@ -698,8 +698,8 @@ from_s3_to_s3_tab_delimited= fromS3toS3TabDelimited(
 
 #s3_to_postgres_operator
 #trigger_glue_job_movies_reviews
-from_s3_to_s3
-#trigger_glue_job_log_reviews
+#from_s3_to_s3
+trigger_glue_job_log_reviews
 #postgres_to_s3
 #from_s3_to_s3_tab_delimited >> s3_to_postgres_operator >> 
 #trigger_glue_job_movies_reviews

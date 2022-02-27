@@ -297,7 +297,7 @@ with DAG(
     s3_key="user_purchase_tab_delimited.txt",
     aws_conn_postgres_id="postgres_default",
     aws_conn_id="aws_default",
-    dag=dag1
+    #dag=dag1
     )
 
     from_s3_to_s3= fromS3toS3XML(
@@ -310,7 +310,7 @@ with DAG(
     s3_key="log_reviews_test.csv",
     aws_conn_postgres_id="postgres_default",
     aws_conn_id="aws_default",
-    dag=dag3
+    #dag=dag3
     )
 
     from_s3_to_s3_tab_delimited= fromS3toS3TabDelimited(
@@ -323,7 +323,7 @@ with DAG(
     s3_key="user_purchase_data.csv",
     aws_conn_postgres_id="postgres_default",
     aws_conn_id="aws_default",
-    dag=dag1
+    #dag=dag1
     )
 
     [from_s3_to_s3_tab_delimited, from_s3_to_s3] >> s3_to_postgres_operator

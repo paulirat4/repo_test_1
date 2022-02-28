@@ -434,7 +434,7 @@ class postgresql_to_s3_bucket(BaseOperator):
                     country=source[7]
                 )
                 w.writerow(vars(obj))
-        s3_client.put_object(Bucket=self.s3_bucket, Key=self.s3_key, Body=f.getvalue())
+            s3_client.put_object(Bucket=self.s3_bucket, Key=self.s3_key, Body=f.getvalue())
 
 
 

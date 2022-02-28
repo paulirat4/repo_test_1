@@ -472,7 +472,7 @@ with DAG(
         schema="dbname",  #'public'
         table="user_purchase",
         # s3_bucket="bucket-test-45",
-        s3_bucket="s3-data-bootcamp-20220227204648095000000005",
+        s3_bucket="s3-data-bootcamp-20220227204648095000000005", #change to processed data bucket
         # s3_key="test_1.csv",
         s3_key="user_purchase_data_from_postgres.csv",
         aws_conn_postgres_id="postgres_default",

@@ -404,6 +404,10 @@ class postgresql_to_s3_bucket(BaseOperator):
         fieldnames = ['invoice_number', 'stock_code', 'detail', 'quantity', 'invoice_date', 'unit_price', 'customer_id', 'country']
 
         queries_list = ["select * from dbname.user_purchase where invoice_date BETWEEN '2010-12-01 08:26:00'::timestamp and '2011-04-01 00:00:00'::timestamp", "select * from dbname.user_purchase where invoice_date BETWEEN '2011-04-01 00:00:00'::timestamp and '2011-07-01 00:00:00'::timestamp", "select * from dbname.user_purchase where invoice_date BETWEEN '2011-07-01 00:00:00'::timestamp and '2011-10-01 00:00:00'::timestamp", "select * from dbname.user_purchase where invoice_date BETWEEN '2011-10-01 00:00:00'::timestamp and '2011-11-01 00:00:00'::timestamp", "select * from dbname.user_purchase where invoice_date BETWEEN '2011-11-01 00:00:00'::timestamp and '2011-12-09 12:50:00'::timestamp"]
+        outfileStr=""
+        f = StringIO(outfileStr)
+        w = csv.DictWriter(f, fieldnames=fieldnames)
+        w.writeheader()
 
         for query in queries_list:
             
@@ -417,11 +421,6 @@ class postgresql_to_s3_bucket(BaseOperator):
             self.sources = self.cursor.fetchall()
             self.log.info(self.sources)
 
-        
-            outfileStr=""
-            f = StringIO(outfileStr)
-            w = csv.DictWriter(f, fieldnames=fieldnames)
-            w.writeheader()
             for source in self.sources:
                 obj = user_purchase(
                     invoice_number=source[0],
@@ -434,7 +433,7 @@ class postgresql_to_s3_bucket(BaseOperator):
                     country=source[7]
                 )
                 w.writerow(vars(obj))
-            s3_client.put_object(Bucket=self.s3_bucket, Key=self.s3_key, Body=f.getvalue())
+        s3_client.put_object(Bucket=self.s3_bucket, Key=self.s3_key, Body=f.getvalue())
 
 
 

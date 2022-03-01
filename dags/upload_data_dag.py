@@ -307,7 +307,7 @@ with DAG(
     # s3_bucket="bucket-test-45",
     s3_bucket="s3-data-bootcamp-20220301042410414100000006",
     # s3_key="test_1.csv",
-    s3_key="log_reviews_test.csv",
+    s3_key="log_reviews.csv",
     aws_conn_postgres_id="postgres_default",
     aws_conn_id="aws_default",
     #dag=dag3

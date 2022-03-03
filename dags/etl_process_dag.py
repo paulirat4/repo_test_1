@@ -95,37 +95,40 @@ class postgresql_to_s3_bucket(BaseOperator):
 
         self.current_table = self.schema + "." + self.table
 
-        self.pg_hook = PostgresHook(postgre_conn_id=self.aws_conn_postgres_id)  
-
-        self.request = (
-            "SELECT * FROM " + self.current_table + " LIMIT 100000"
-        )
-        self.log.info(self.request)
-        self.connection = self.pg_hook.get_conn()
-        self.cursor = self.connection.cursor()
-        self.cursor.execute(self.request)
-        self.sources = self.cursor.fetchall()
-        self.log.info(self.sources)
+        self.pg_hook = PostgresHook(postgre_conn_id=self.aws_conn_postgres_id)
 
         fieldnames = ['invoice_number', 'stock_code', 'detail', 'quantity', 'invoice_date', 'unit_price', 'customer_id', 'country']
+
+        queries_list = ["select * from dbname.user_purchase where invoice_date BETWEEN '2010-12-01 08:26:00'::timestamp and '2011-04-01 00:00:00'::timestamp", "select * from dbname.user_purchase where invoice_date BETWEEN '2011-04-01 00:00:00'::timestamp and '2011-07-01 00:00:00'::timestamp", "select * from dbname.user_purchase where invoice_date BETWEEN '2011-07-01 00:00:00'::timestamp and '2011-10-01 00:00:00'::timestamp", "select * from dbname.user_purchase where invoice_date BETWEEN '2011-10-01 00:00:00'::timestamp and '2011-11-01 00:00:00'::timestamp", "select * from dbname.user_purchase where invoice_date BETWEEN '2011-11-01 00:00:00'::timestamp and '2011-12-09 12:50:00'::timestamp"]
         outfileStr=""
         f = StringIO(outfileStr)
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
-        for source in self.sources:
-            obj = user_purchase(
-                invoice_number=source[0],
-                stock_code=source[1],
-                detail=source[2],
-                quantity=source[3],
-                invoice_date=source[4],
-                unit_price=source[5],
-                customer_id=source[6],
-                country=source[7]
-            )
-            w.writerow(vars(obj))
-        s3_client.put_object(Bucket=self.s3_bucket, Key=self.s3_key, Body=f.getvalue())
 
+        for query in queries_list:
+            
+            self.request = (query)
+            
+            self.log.info(self.request)
+            self.connection = self.pg_hook.get_conn()
+            self.cursor = self.connection.cursor()
+            self.cursor.execute(self.request)
+            self.sources = self.cursor.fetchall()
+            self.log.info(self.sources)
+
+            for source in self.sources:
+                obj = user_purchase(
+                    invoice_number=source[0],
+                    stock_code=source[1],
+                    detail=source[2],
+                    quantity=source[3],
+                    invoice_date=source[4],
+                    unit_price=source[5],
+                    customer_id=source[6],
+                    country=source[7]
+                )
+                w.writerow(vars(obj))
+        s3_client.put_object(Bucket=self.s3_bucket, Key=self.s3_key, Body=f.getvalue())
 
 
 with DAG(
@@ -137,27 +140,28 @@ with DAG(
     dagrun_timeout=dt.timedelta(minutes=70),
 ) as dag:
 
-    # trigger_glue_job_movies_reviews = AwsGlueJobOperator(
-    #     job_name="etl-job-movies-reviews-",
-    #     region_name = "us-east-2",
-    #     iam_role_name="glue_role_paulirat",
-    #     task_id="job",
-    #     #dag=dag2,
-    #     #dag=dag4,
-    #     script_args= {'--example_movie_review_path':   's3://s3-data-bootcamp-20220301042410414100000006/movie_review.csv',
-    #     '--bucket_for_processed_data_path':   's3://processed-data-bucket-20220301042410413700000004/movie_reviews'}
-    #     )
+    trigger_glue_job_movies_reviews = AwsGlueJobOperator(
+        job_name="etl-job-movies-reviews-",
+        region_name = "us-east-2",
+        iam_role_name="glue_role_paulirat",
+        task_id="job",
+        #dag=dag2,
+        #dag=dag4,
+        script_args= {'--example_movie_review_path':   's3://s3-data-bootcamp-20220301042410414100000006/movie_review.csv',
+        '--bucket_for_processed_data_path':   's3://processed-data-bucket-20220301042410413700000004/movie_reviews'}
+        )
 
-    # trigger_glue_job_log_reviews = AwsGlueJobOperator(
-    #     job_name="etl-job-log-reviews-",
-    #     iam_role_name="glue_role_paulirat",
-    #     task_id="job_log_reviews",
-    #     #dag=dag2,
-    #     #dag=dag4,
-    #     script_args= {'--log_review_xml_path':   's3://s3-data-bootcamp-20220301042410414100000006/review_log.xml',
-    #     '--bucket_for_processed_data_path':   's3://processed-data-bucket-20220301042410413700000004/log_reviews',
-    #     '--extra-jars':   's3://resources-bucket-20220301042410413800000005/spark-xml_2.11-0.4.0.jar'}
-    #     )
+    trigger_glue_job_log_reviews = AwsGlueJobOperator(
+        job_name="etl-job-log-reviews-",
+        iam_role_name="glue_role_paulirat",
+        task_id="job_log_reviews",
+        #dag=dag2,
+        #dag=dag4,
+        script_args= {'--log_review_xml_path':   's3://s3-data-bootcamp-20220301042410414100000006/review_log.xml',
+        '--bucket_for_processed_data_path':   's3://processed-data-bucket-20220301042410413700000004/log_reviews',
+        '--extra-jars':   's3://resources-bucket-20220301042410413800000005/spark-xml_2.11-0.4.0.jar'}
+        )
+
     postgres_to_s3 = postgresql_to_s3_bucket(
         task_id="dag_postgres_to_s3",
         schema="dbname",  #'public'
@@ -171,5 +175,5 @@ with DAG(
         #dag=dag4
         )
 
-    #[trigger_glue_job_log_reviews, postgres_to_s3, trigger_glue_job_movies_reviews]
-    postgres_to_s3
+    [trigger_glue_job_log_reviews, postgres_to_s3, trigger_glue_job_movies_reviews]
+    #postgres_to_s3

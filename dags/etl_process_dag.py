@@ -147,8 +147,8 @@ with DAG(
         task_id="job",
         #dag=dag2,
         #dag=dag4,
-        script_args= {'--example_movie_review_path':   's3://s3-data-bootcamp-20220301042410414100000006/movie_review.csv',
-        '--bucket_for_processed_data_path':   's3://processed-data-bucket-20220310035618153400000007/movie_reviews'}
+        script_args= {'--example_movie_review_path':   's3://s3-data-bootcamp-20220310062751415600000006/movie_review.csv',
+        '--bucket_for_processed_data_path':   's3://processed-data-bucket-20220310062752508100000009/movie_reviews'}
         )
 
     trigger_glue_job_log_reviews = AwsGlueJobOperator(
@@ -157,9 +157,9 @@ with DAG(
         task_id="job_log_reviews",
         #dag=dag2,
         #dag=dag4,
-        script_args= {'--log_review_xml_path':   's3://s3-data-bootcamp-20220301042410414100000006/review_log.xml',
-        '--bucket_for_processed_data_path':   's3://processed-data-bucket-20220310035618153400000007/log_reviews',
-        '--extra-jars':   's3://resources-bucket-20220310035618153100000005/spark-xml_2.11-0.4.0.jar'}
+        script_args= {'--log_review_xml_path':   's3://s3-data-bootcamp-20220310062751415600000006/review_log.xml',
+        '--bucket_for_processed_data_path':   's3://processed-data-bucket-20220310062752508100000009/log_reviews',
+        '--extra-jars':   's3://resources-bucket-20220310062751414900000005/spark-xml_2.11-0.4.0.jar'}
         )
 
     postgres_to_s3 = postgresql_to_s3_bucket(
@@ -167,7 +167,7 @@ with DAG(
         schema="dbname",  #'public'
         table="user_purchase",
         # s3_bucket="bucket-test-45",
-        s3_bucket="processed-data-bucket-20220310035618153400000007",
+        s3_bucket="processed-data-bucket-20220310062752508100000009",
         # s3_key="test_1.csv",
         s3_key="user_purchase_data_from_postgres.csv",
         aws_conn_postgres_id="postgres_default",

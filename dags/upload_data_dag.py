@@ -292,7 +292,7 @@ with DAG(
     schema="dbname",  #'public'
     table="user_purchase",
     # s3_bucket="bucket-test-45",
-    s3_bucket="s3-data-bootcamp-20220310035619447300000009",  
+    s3_bucket="s3-data-bootcamp-20220310054016427100000009",  
     # s3_key="test_1.csv",
     s3_key="user_purchase_tab_delimited.txt",
     aws_conn_postgres_id="postgres_default",
@@ -305,7 +305,7 @@ with DAG(
     schema="dbname",  #'public'
     table="user_purchase",
     # s3_bucket="bucket-test-45",
-    s3_bucket="s3-data-bootcamp-20220310035619447300000009",
+    s3_bucket="s3-data-bootcamp-20220310054016427100000009",
     # s3_key="test_1.csv",
     s3_key="log_reviews.csv",
     aws_conn_postgres_id="postgres_default",
@@ -318,7 +318,7 @@ with DAG(
     schema="dbname",  #'public'
     table="user_purchase",
     # s3_bucket="bucket-test-45",
-    s3_bucket="s3-data-bootcamp-20220310035619447300000009",
+    s3_bucket="s3-data-bootcamp-20220310054016427100000009",
     # s3_key="test_1.csv",
     s3_key="user_purchase_data.csv",
     aws_conn_postgres_id="postgres_default",

@@ -326,7 +326,8 @@ with DAG(
     #dag=dag1
     )
 
-    [from_s3_to_s3_tab_delimited, from_s3_to_s3] >> s3_to_postgres_operator
+    #[from_s3_to_s3_tab_delimited, from_s3_to_s3] >> s3_to_postgres_operator
+    from_s3_to_s3_tab_delimited
 
 
 # class user_purchase():

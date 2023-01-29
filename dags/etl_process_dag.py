@@ -145,23 +145,23 @@ with DAG(
         region_name = "us-east-2",
         iam_role_name="glue_role_paulirat",
         task_id="job",
-        script_location="s3://scripts-bucket-bootcamp-20230124233546053900000006/glue_script.py",
+        script_location="s3://scripts-bucket-bootcamp-20230129200934369300000008/glue_script.py",
         #dag=dag2,
         #dag=dag4,
-        script_args= {'--script_location': 's3://scripts-bucket-bootcamp-20230124233546053900000006/glue_script.py',
-        '--example_movie_review_path':   's3://s3-data-bootcamp-20230124233546055000000007/movie_review.csv'}
+        script_args= {'--script_location': 's3://scripts-bucket-bootcamp-20230129200934369300000008/glue_script.py',
+        '--example_movie_review_path':   's3://s3-data-bootcamp-20230129200934367500000007/movie_review.csv'}
         )
 
     trigger_glue_job_log_reviews = AwsGlueJobOperator(
         job_name="etl-job-log-reviews-",
         iam_role_name="glue_role_paulirat",
         task_id="job_log_reviews",
-        script_location="s3://scripts-bucket-bootcamp-20230124233546053900000006/glue_log_reviews.py",
+        script_location="s3://scripts-bucket-bootcamp-20230129200934369300000008/glue_log_reviews.py",
         #dag=dag2,
         #dag=dag4,
-        script_args= {'--log_review_xml_path':   's3://s3-data-bootcamp-20230124233546055000000007/review_log.xml',
-        '--bucket_for_processed_data_path':   's3://processed-data-bucket-20230124233546055700000009/log_reviews',
-        '--extra-jars':   's3://resources-bucket-20230124233546055400000008/spark-xml_2.11-0.4.0.jar',
+        script_args= {'--log_review_xml_path':   's3://s3-data-bootcamp-20230129200934367500000007/review_log.xml',
+        '--bucket_for_processed_data_path':   's3://processed-data-bucket-20230129200934366700000004/log_reviews',
+        '--extra-jars':   's3://resources-bucket-20230129200934367100000006/spark-xml_2.11-0.4.0.jar',
         }
         )
 
@@ -170,7 +170,7 @@ with DAG(
         schema="dbname",  #'public'
         table="user_purchase",
         # s3_bucket="bucket-test-45",
-        s3_bucket="processed-data-bucket-20230124233546055700000009",
+        s3_bucket="processed-data-bucket-20230129200934366700000004",
         # s3_key="test_1.csv",
         s3_key="user_purchase_data_from_postgres.csv",
         aws_conn_postgres_id="postgres_default",

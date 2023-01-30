@@ -148,8 +148,7 @@ with DAG(
         script_location="s3://scripts-bucket-bootcamp-20230130001153688100000008/glue_script.py",
         #dag=dag2,
         #dag=dag4,
-        script_args= {'--JOB_NAME': 'etl-job-movies-reviews-',
-        '--script_location': 's3://scripts-bucket-bootcamp-20230130001153688100000008/glue_script.py',
+        script_args= {'--bucket_for_processed_data_path': 's3://processed-data-bucket-20230130001153685200000006/movie_reviews',
         '--example_movie_review_path':   's3://s3-data-bootcamp-20230130001153688600000009/movie_review.csv'}
         )
 
@@ -179,5 +178,5 @@ with DAG(
         #dag=dag4
         )
 
-    [trigger_glue_job_log_reviews, postgres_to_s3, trigger_glue_job_movies_reviews]
-    #postgres_to_s3
+#    [trigger_glue_job_log_reviews, postgres_to_s3, trigger_glue_job_movies_reviews]
+    trigger_glue_job_movies_reviews
